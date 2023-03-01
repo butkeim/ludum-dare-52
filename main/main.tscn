@@ -1,0 +1,138 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://magic_book/magic_book.tscn" type="PackedScene" id=1]
+[ext_resource path="res://main/main.gd" type="Script" id=2]
+[ext_resource path="res://key/key.tscn" type="PackedScene" id=3]
+[ext_resource path="res://arrow/arrow.tscn" type="PackedScene" id=4]
+[ext_resource path="res://table/table.png" type="Texture" id=5]
+[ext_resource path="res://chaudron/chaudron.tscn" type="PackedScene" id=6]
+[ext_resource path="res://fire_handle/fire_handle.tscn" type="PackedScene" id=7]
+[ext_resource path="res://spatule/spatule.tscn" type="PackedScene" id=8]
+[ext_resource path="res://pigeon/piegon.tscn" type="PackedScene" id=9]
+[ext_resource path="res://cut/cut.tscn" type="PackedScene" id=10]
+[ext_resource path="res://pigeon/icon.png" type="Texture" id=11]
+[ext_resource path="res://flower/icon.png" type="Texture" id=12]
+[ext_resource path="res://spawner/spawner.tscn" type="PackedScene" id=13]
+[ext_resource path="res://heart/heart.png" type="Texture" id=14]
+[ext_resource path="res://flower/flower.tscn" type="PackedScene" id=15]
+[ext_resource path="res://main/fondu.shader" type="Shader" id=16]
+[ext_resource path="res://page/new_noisetexture.tres" type="Texture" id=17]
+[ext_resource path="res://audio/audiomass-output.mp3" type="AudioStream" id=18]
+[ext_resource path="res://end_message/loose.png" type="Texture" id=19]
+[ext_resource path="res://end_message/win.png" type="Texture" id=20]
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 16 )
+shader_param/amount = 2.0
+shader_param/x = 0.5
+shader_param/y = 0.5
+shader_param/color = Color( 1, 1, 1, 1 )
+shader_param/dissolve_texture = ExtResource( 17 )
+
+[node name="Main" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="Arrow" parent="Camera2D" instance=ExtResource( 4 )]
+position = Vector2( 776, 0 )
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
+
+[node name="Fondu" type="ColorRect" parent="Camera2D/CanvasLayer"]
+visible = false
+material = SubResource( 1 )
+margin_right = 1280.0
+margin_bottom = 720.0
+rect_min_size = Vector2( 0, -360 )
+
+[node name="Loose" type="Sprite" parent="Camera2D/CanvasLayer"]
+visible = false
+position = Vector2( 640, 360 )
+z_index = 2
+texture = ExtResource( 19 )
+
+[node name="Win" type="Sprite" parent="Camera2D/CanvasLayer"]
+visible = false
+position = Vector2( 640, 360 )
+z_index = 2
+texture = ExtResource( 20 )
+
+[node name="MagicBook" parent="." instance=ExtResource( 1 )]
+position = Vector2( 263, 642 )
+rotation = 1.44513
+
+[node name="Key" parent="." instance=ExtResource( 3 )]
+position = Vector2( 200, 600 )
+book_path = NodePath("../MagicBook")
+key_hole_path = NodePath("../MagicBook/KeyHole")
+key_hole_path_offset = NodePath("../MagicBook/KeyHole/KeyHoleOffset")
+
+[node name="Table" type="Sprite" parent="."]
+modulate = Color( 0.647059, 0.647059, 0.647059, 1 )
+z_index = -5
+texture = ExtResource( 5 )
+
+[node name="Table2" type="Sprite" parent="."]
+modulate = Color( 0.647059, 0.647059, 0.647059, 1 )
+position = Vector2( 1280, 0 )
+z_index = -5
+texture = ExtResource( 5 )
+
+[node name="Spatule" parent="." instance=ExtResource( 8 )]
+position = Vector2( 1669, -331 )
+
+[node name="FireHandle" parent="." instance=ExtResource( 7 )]
+position = Vector2( 1829, -323 )
+
+[node name="Chaudron" parent="." instance=ExtResource( 6 )]
+position = Vector2( 1606, 232 )
+
+[node name="Cut" parent="." instance=ExtResource( 10 )]
+position = Vector2( 1454, 49 )
+z_index = 1
+
+[node name="SpawnerFlower" parent="." instance=ExtResource( 13 )]
+position = Vector2( 1312, -300 )
+object_to_spawn = ExtResource( 15 )
+
+[node name="Sprite" type="Sprite" parent="SpawnerFlower"]
+texture = ExtResource( 12 )
+
+[node name="SpawnerPigeon" parent="SpawnerFlower" instance=ExtResource( 13 )]
+position = Vector2( 128, 0 )
+object_to_spawn = ExtResource( 9 )
+
+[node name="Sprite" type="Sprite" parent="SpawnerFlower/SpawnerPigeon"]
+texture = ExtResource( 11 )
+
+[node name="Hearts" type="Node2D" parent="."]
+position = Vector2( 700, 309 )
+scale = Vector2( 0.783055, 0.783055 )
+
+[node name="Heart1" type="Sprite" parent="Hearts"]
+texture = ExtResource( 14 )
+
+[node name="Heart2" type="Sprite" parent="Hearts"]
+position = Vector2( 108, 0 )
+texture = ExtResource( 14 )
+
+[node name="Heart3" type="Sprite" parent="Hearts"]
+position = Vector2( 216, 0 )
+texture = ExtResource( 14 )
+
+[node name="Heart4" type="Sprite" parent="Hearts"]
+position = Vector2( 324, 0 )
+texture = ExtResource( 14 )
+
+[node name="Heart5" type="Sprite" parent="Hearts"]
+position = Vector2( 432, 0 )
+texture = ExtResource( 14 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
+volume_db = -8.0
+autoplay = true
+
+[editable path="MagicBook"]
